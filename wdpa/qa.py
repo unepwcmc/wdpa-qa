@@ -1236,14 +1236,56 @@ def invalid_no_tk_area_no_take(wdpa_df, return_pid=False):
 def invalid_status(wdpa_df, return_pid=False):
     '''
     Return True if STATUS is unequal to any of the following allowed values:
-    ["Proposed", "Inscribed", "Adopted", "Designated", "Established"]
+    ["Proposed", "Designated", "Established"] for all sites except 2 designations (WH & Barcelona convention)
     Return list of WDPA_PIDs where STATUS is invalid, if return_pid is set True
+    Note: "Inscribed" and "Adopted" are only valid for specific DESIG_ENG.
     '''
 
     field = 'STATUS'
-    field_allowed_values = ['Proposed', 'Inscribed', 'Adopted', 'Designated', 'Established']
-    condition_field = ''
-    condition_crit = []
+    field_allowed_values = ['Proposed', 'Designated', 'Established']
+    condition_field = 'DESIG_ENG'
+    condition_crit != ['World Heritage Site (natural or mixed)',
+			'Specially Protected Areas of Mediterranean Importance (Barcelona Convention)']
+
+    return invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field, condition_crit, return_pid)
+
+########################################
+#### 4.15.a Invalid STATUS WH Sites ####
+########################################
+
+def invalid_status_WH(wdpa_df, return_pid=False):
+    '''
+    Return True if STATUS is unequal to any of the following allowed values:
+    ["Proposed", "Designated", "Established", "Inscribed"] and DESIG_ENG is unqual to 'World Heritage Site (natural or mixed)'
+    Return list of WDPA_PIDs where STATUS is invalid, if return_pid is set True
+
+    Note: Not sure if Designated and Established are allowed for WH sites.
+    '''
+
+    field = 'STATUS'
+    field_allowed_values = ["Proposed", "Designated", "Established", "Inscribed"]
+    condition_field = 'DESIG_ENG'
+    condition_crit = ['World Heritage Site (natural or mixed)']
+
+    return invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field, condition_crit, return_pid)
+
+####################################################
+#### 4.15.b Invalid STATUS Barcelona Convention ####
+####################################################
+
+def invalid_status_Barca(wdpa_df, return_pid=False):
+    '''
+    Return True if STATUS is unequal to any of the following allowed values:
+    ["Proposed", "Designated", "Established", "Adopted"] and DESIG_ENG is unqual to 'Specially Protected Areas of Mediterranean Importance (Barcelona Convention)'
+    Return list of WDPA_PIDs where STATUS is invalid, if return_pid is set True
+
+    Note: Not sure if Designated and Established are allowed for Barcelona Convention sites.
+    '''
+
+    field = 'STATUS'
+    field_allowed_values = ["Proposed", "Designated", "Established", "Adopted"]
+    condition_field = 'DESIG_ENG'
+    condition_crit = ['Specially Protected Areas of Mediterranean Importance (Barcelona Convention)']
 
     return invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field, condition_crit, return_pid)
 
@@ -1942,6 +1984,8 @@ core_checks = [
 {'name': 'check_no_tk_area_marine0', 'func': invalid_no_tk_area_marine0},
 {'name': 'ivd_no_tk_area_no_take', 'func': invalid_no_tk_area_no_take},
 {'name': 'ivd_status', 'func': invalid_status},
+{'name': 'ivd_status_WH', 'func': invalid_status_WH},
+{'name': 'ivd_status_BarcelonaConv', 'func': invalid_status_Barca},
 {'name': 'ivd_status_yr', 'func': invalid_status_yr},
 {'name': 'ivd_gov_type', 'func': invalid_gov_type},
 {'name': 'ivd_own_type', 'func': invalid_own_type},
