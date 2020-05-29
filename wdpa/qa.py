@@ -411,6 +411,28 @@ def area_invalid_rep_area(wdpa_df, return_pid=False):
 
     return len(invalid_wdpa_pid) > 0
 
+#################################################
+#### 2.8.a Invalid: REP_AREA >= 500,000 km²  ####
+#################################################
+
+def area_invalid_big_rep_area(wdpa_df, return_pid=False):
+    '''
+    Return True if REP_AREA is larger than 500,000 km²
+    Return list of WDPA_PIDs where REP_AREA is larger than 500,000 km², if return_pid=True
+    '''
+
+    # Arguments
+    size_threshold = 500000
+    field_rep_area = 'REP_AREA'
+
+    # Find invalid WDPA_PIDs
+    invalid_wdpa_pid = wdpa_df[wdpa_df[field_rep_area] >= size_threshold]['WDPA_PID'].values
+
+    if return_pid:
+        return invalid_wdpa_pid
+
+    return len(invalid_wdpa_pid) > 0
+
 ############################################################
 #### 2.9. Invalid: REP_M_AREA <= 0 when MARINE = 1 or 2 ####
 ############################################################
@@ -1945,6 +1967,7 @@ def nan_present_metadataid(wdpa_df, return_pid=False):
 core_checks = [
 {'name': 'duplicate_wdpa_pid', 'func': duplicate_wdpa_pid},
 {'name': 'tiny_rep_area', 'func': area_invalid_rep_area},
+{'name': 'big_rep_area', 'func': area_invalid_big_rep_area},
 {'name': 'zero_rep_m_area_marine12', 'func': area_invalid_rep_m_area_marine12},
 {'name': 'ivd_rep_m_area_gt_rep_area', 'func': area_invalid_rep_m_area_rep_area},
 {'name': 'ivd_no_tk_area_gt_rep_m_area', 'func': area_invalid_no_tk_area_rep_m_area},
