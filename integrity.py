@@ -1,5 +1,6 @@
 import sys, arcpy
 import numpy as np
+import pandas as pd
 from wdpa.qa import arcgis_table_to_df, find_wdpa_rows, poly_checks, INPUT_FIELDS_META
 from wdpa.export import output_errors_to_excel
 
@@ -22,6 +23,10 @@ df_poly = arcgis_table_to_df(input_poly, INPUT_FIELDS)
 df_pt = arcgis_table_to_df(input_pt, INPUT_FIELDS)
 df_meta = arcgis_table_to_df(input_meta, INPUT_FIELDS_META)
 
+# Load the list of WDPA_PIDs to make sure have not been removed from WDPA in the update.
+# Will need to think of a solution to have this accessible online - sharepoint?
+ID_not_to_delete = pd.read_csv('//gis-rs/gis/Protected_Planet_Initiative/Updating_WDPA_and_WD_OECM/Preparing WDPA Release/IDs_not_to_delete/IDs_not_to_delete.csv')
+
 result = dict()
 # check duplicate WDPAID and WDPA_PID across point and polygon
 result['overlap_wdpaid'] = df_poly[df_poly['WDPAID'].isin(
@@ -40,5 +45,11 @@ result['metaid_only_in_data'] = df_poly[df_poly['METADATAID'].isin(
 result['metaid_only_in_metadata'] =  df_meta[df_meta['METADATAID'].isin(
     np.setdiff1d(inref_meta, indata_meta))]
 
-output_errors_to_excel(result, output_path, [{'name': key} for key in result.keys()], 'meta')
+# check "IDs not to delete" remain in WDPA
+poly_point = np.union1d(df_poly['WDPAID'].values, df_pt['WDPAID'].values)
+ID_to_keep = ID_not_to_delete['WDPA_PID'].values
 
+result['WDPAID_missing'] = ID_not_to_delete[ID_not_to_delete['WDPA_PID'].isin(
+    np.setdiff1d(ID_not_to_delete['WDPA_PID'].values, poly_point))]
+
+output_errors_to_excel(result, output_path, [{'name': key} for key in result.keys()],'integrity', 'meta')
