@@ -967,6 +967,45 @@ def invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field
 
     return len(invalid_wdpa_pid) > 0
 
+### Factory Function ####
+
+def invalid_value_in_field_isnot(wdpa_df, field, field_allowed_values, condition_field, condition_crit, return_pid=False):
+    '''
+    Factory Function: this generic function is adapted from the above factory function and is
+    to be linked to some of the family of 'invalid' input functions stated below. These latter
+    functions are to give information on which fields to check and pull from the DataFrame.
+
+    This function checks the WDPA for invalid values and returns a list of WDPA_PIDs
+    that have invalid values for the specified field(s). It is used is condition_crit is anything
+    but as specified string of values.
+
+    Return True if invalid values are found in specified fields.
+
+    Return list of WDPA_PIDs with invalid fields, if return_pid is set True.
+
+    ## Arguments ##
+
+    field                -- a string specifying the field to be checked
+    field_allowed_values -- a list of expected values in each field
+    condition_field      -- a list with another field on which the evaluation of
+                            invalid values depends; leave "" if no condition specified
+    condition_crit       -- a list of values to be excluded from the condition_field
+    '''
+
+    # if condition_field and condition_crit are specified
+    if condition_field != '' and condition_crit != []:
+        invalid_wdpa_pid = wdpa_df[(~wdpa_df[field].isin(field_allowed_values)) & (~wdpa_df[condition_field].isin(condition_crit))]['WDPA_PID'].values
+
+    # If condition_field and condition_crit are not specified
+    else:
+        invalid_wdpa_pid = wdpa_df[~wdpa_df[field].isin(field_allowed_values)]['WDPA_PID'].values
+
+    if return_pid:
+        # return list with invalid WDPA_PIDs
+        return invalid_wdpa_pid
+
+    return len(invalid_wdpa_pid) > 0
+
 #### Input functions ####
 
 #############################
@@ -1260,6 +1299,7 @@ def invalid_status(wdpa_df, return_pid=False):
     Return True if STATUS is unequal to any of the following allowed values:
     ["Proposed", "Designated", "Established"] for all sites except 2 designations (WH & Barcelona convention)
     Return list of WDPA_PIDs where STATUS is invalid, if return_pid is set True
+
     Note: "Inscribed" and "Adopted" are only valid for specific DESIG_ENG.
     '''
 
@@ -2029,7 +2069,8 @@ core_checks = [
 {'name': 'ivd_nan_present_desig_eng', 'func': nan_present_desig_eng},
 {'name': 'ivd_nan_present_mang_auth', 'func': nan_present_mang_auth},
 {'name': 'ivd_nan_present_mang_plan', 'func': nan_present_mang_plan},
-{'name': 'ivd_nan_present_sub_loc', 'func': nan_present_sub_loc},]
+{'name': 'ivd_nan_present_sub_loc', 'func': nan_present_sub_loc},
+{'name': 'ivd_nan_present_metadataid', 'func': nan_present_metadataid}]
 
 # Checks to be run for polygon data only (includes GIS_AREA and/or GIS_M_AREA)
 area_checks = [

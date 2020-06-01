@@ -7,6 +7,8 @@ from wdpa.export import output_errors_to_excel
 input_poly = sys.argv[1]
 output_path = sys.argv[2]
 
+inputfilename = os.path.basename(input_poly)
+
 # Let us welcome our guest of honour
 arcpy.AddMessage('\nAll hail the WDPA\n')
 
@@ -28,5 +30,5 @@ for poly_check in poly_checks: # poly_checks is a dictionary with checks' descri
 
 # Write output to file
 arcpy.AddMessage('Writing output to Excel')
-output_errors_to_excel(result, output_path, poly_checks, 'poly')
+output_errors_to_excel(result, output_path, poly_checks, inputfilename, 'poly')
 arcpy.AddMessage('\nThe QA checks on POLYGONS have finished. \n\nWritten by Stijn den Haan and Yichuan Shi\nAugust 2019')
