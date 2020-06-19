@@ -1,5 +1,5 @@
 # Load packages and modules
-import sys, arcpy
+import sys, arcpy, os
 from wdpa.qa import arcgis_table_to_df, find_wdpa_rows, pt_checks, INPUT_FIELDS_PT
 from wdpa.export import output_errors_to_excel
 

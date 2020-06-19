@@ -10,10 +10,10 @@ input_pt = sys.argv[2]
 input_meta = sys.argv[3]
 output_path = sys.argv[4]
 
-# input_poly = r'E:\Yichuan\WDPA\WDPA_Dec2016_Public\WDPA_Dec2016_Public.gdb\WDPA_poly_Dec2016'
-# input_pt = r'E:\Yichuan\WDPA\WDPA_Dec2016_Public\WDPA_Dec2016_Public.gdb\WDPA_point_Dec2016'
-# input_meta = r'E:\Yichuan\WDPA\WDPA_Dec2016_Public\WDPA_Dec2016_Public.gdb\WDPA_source_Dec2016'
-# output_path = r'E:\Yichuan\WDPA\WDPA_Dec2016_Public'
+#input_poly = r'C:\Users\clairev\Desktop\WDPA_May2020_Public.gdb\WDPA_poly_May_2020'
+#input_pt = r'C:\Users\clairev\Desktop\WDPA_May2020_Public.gdb\WDPA_point_May_2020'
+#input_meta = r'C:\Users\clairev\Desktop\WDPA_May2020_Public.gdb\WDPA_source_May2020'
+#output_path = r'C:\Users\clairev\Desktop'
 
 # poly and points
 INPUT_FIELDS = ['WDPAID', 'WDPA_PID', 'METADATAID', 'NAME', 'ISO3', 'DESIG']
