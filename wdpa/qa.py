@@ -1903,6 +1903,118 @@ def ivd_nan_present_metadataid(wdpa_df, return_pid=False):
 
     return nan_present(wdpa_df, check_field, return_pid)
 
+#######################################
+#### 7.9. NaN present - INT_CRIT ######
+#######################################
+
+def ivd_nan_present_int_crit(wdpa_df, return_pid=False):
+    '''
+    Capture NaN / NA in the field 'INT_CRIT'
+
+    Input: WDPA in pandas DataFrame
+    Output: list with WDPA_PIDs containing NaN / NA in field 'INT_CRIT'
+    '''
+
+    check_field = 'INT_CRIT'
+
+    return nan_present(wdpa_df, check_field, return_pid)
+
+#######################################
+#### 7.10. NaN present - REP_M_AREA ###
+#######################################
+
+def ivd_nan_present_rep_m_area(wdpa_df, return_pid=False):
+    '''
+    Capture NaN / NA in the field 'REP_M_AREA'
+
+    Input: WDPA in pandas DataFrame
+    Output: list with WDPA_PIDs containing NaN / NA in field 'REP_M_AREA'
+    '''
+
+    check_field = 'REP_M_AREA'
+
+    return nan_present(wdpa_df, check_field, return_pid)
+
+#######################################
+#### 7.11. NaN present - REP_AREA ###
+#######################################
+
+def ivd_nan_present_rep_area(wdpa_df, return_pid=False):
+    '''
+    Capture NaN / NA in the field 'REP_AREA'
+
+    Input: WDPA in pandas DataFrame
+    Output: list with WDPA_PIDs containing NaN / NA in field 'REP_AREA'
+    '''
+
+    check_field = 'REP_AREA'
+
+    return nan_present(wdpa_df, check_field, return_pid)
+
+#######################################
+#### 7.12. NaN present - GIS_M_AREA ###
+#######################################
+
+def ivd_nan_present_gis_m_area(wdpa_df, return_pid=False):
+    '''
+    Capture NaN / NA in the field 'GIS_M_AREA'
+
+    Input: WDPA in pandas DataFrame
+    Output: list with WDPA_PIDs containing NaN / NA in field 'GIS_M_AREA'
+    '''
+
+    check_field = 'GIS_M_AREA'
+
+    return nan_present(wdpa_df, check_field, return_pid)
+
+#######################################
+#### 7.13. NaN present - GIS_AREA ###
+#######################################
+
+def ivd_nan_present_gis_area(wdpa_df, return_pid=False):
+    '''
+    Capture NaN / NA in the field 'GIS_AREA'
+
+    Input: WDPA in pandas DataFrame
+    Output: list with WDPA_PIDs containing NaN / NA in field 'GIS_AREA'
+    '''
+
+    check_field = 'GIS_AREA'
+
+    return nan_present(wdpa_df, check_field, return_pid)
+
+#######################################
+#### 7.14. NaN present - NO_TK_AREA ###
+#######################################
+
+def ivd_nan_present_no_tk_area(wdpa_df, return_pid=False):
+    '''
+    Capture NaN / NA in the field 'NO_TK_AREA'
+
+    Input: WDPA in pandas DataFrame
+    Output: list with WDPA_PIDs containing NaN / NA in field 'NO_TK_AREA'
+    '''
+
+    check_field = 'NO_TK_AREA'
+
+    return nan_present(wdpa_df, check_field, return_pid)
+
+#######################################
+#### 7.15. NaN present - STATUS_YR ###
+#######################################
+
+def ivd_nan_present_status_yr(wdpa_df, return_pid=False):
+    '''
+    Capture NaN / NA in the field 'STATUS_YR'
+
+    Input: WDPA in pandas DataFrame
+    Output: list with WDPA_PIDs containing NaN / NA in field 'STATUS_YR'
+    '''
+
+    check_field = 'STATUS_YR'
+
+    return nan_present(wdpa_df, check_field, return_pid)
+
 #################################################################
 #### 8. METADATAID: WDPA and Source Table (on the Wish List) ####
 #################################################################
@@ -2041,7 +2153,12 @@ core_checks = [
 {'name': 'ivd_nan_present_mang_auth', 'func': ivd_nan_present_mang_auth},
 {'name': 'ivd_nan_present_mang_plan', 'func': ivd_nan_present_mang_plan},
 {'name': 'ivd_nan_present_sub_loc', 'func': ivd_nan_present_sub_loc},
-{'name': 'ivd_nan_present_metadataid', 'func': ivd_nan_present_metadataid}]
+{'name': 'ivd_nan_present_metadataid', 'func': ivd_nan_present_metadataid},
+{'name': 'ivd_nan_present_int_crit', 'func': ivd_nan_present_int_crit},
+{'name': 'ivd_nan_present_rep_m_area', 'func': ivd_nan_present_rep_m_area},
+{'name': 'ivd_nan_present_rep_area', 'func': ivd_nan_present_rep_area},
+{'name': 'ivd_nan_present_no_tk_area', 'func': ivd_nan_present_no_tk_area},
+{'name': 'ivd_nan_present_status_yr', 'func': ivd_nan_present_status_yr}]
 
 # Checks to be run for polygon data only (includes GIS_AREA and/or GIS_M_AREA)
 area_checks = [
@@ -2053,7 +2170,9 @@ area_checks = [
 {'name': 'no_tk_area_gt_gis_m_area', 'func': area_invalid_no_tk_area_gis_m_area},
 {'name': 'ivd_gis_m_area_gt_gis_area', 'func': area_invalid_gis_m_area_gis_area},
 {'name': 'zero_gis_m_area_marine12', 'func': area_invalid_gis_m_area_marine12},
-{'name': 'ivd_marine_designation', 'func': area_invalid_marine},]
+{'name': 'ivd_marine_designation', 'func': area_invalid_marine},
+{'name': 'ivd_nan_present_gis_m_area', 'func': ivd_nan_present_gis_m_area},
+{'name': 'ivd_nan_present_gis_area', 'func': ivd_nan_present_gis_area}]
 
 # Checks for polygons
 poly_checks = core_checks + area_checks
