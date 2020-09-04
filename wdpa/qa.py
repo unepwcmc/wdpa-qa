@@ -2016,7 +2016,7 @@ def ivd_nan_present_status_yr(wdpa_df, return_pid=False):
     return nan_present(wdpa_df, check_field, return_pid)
 
 #################################################################
-#### 8. METADATAID: WDPA and Source Table (on the Wish List) ####
+#### 8. METADATAID: WDPA and Source Table (in Integrity tool) ####
 #################################################################
 
 #######################################################################
@@ -2088,7 +2088,7 @@ def ivd_nan_present_status_yr(wdpa_df, return_pid=False):
 
 # Checks to be run for both point and polygon data
 core_checks = [
-{'name': 'duplicate_wdpa_pid', 'func': duplicate_wdpa_pid},
+{'name': 'ivd_duplicate_wdpa_pid', 'func': duplicate_wdpa_pid},
 {'name': 'tiny_rep_area', 'func': area_invalid_rep_area},
 {'name': 'big_rep_area', 'func': area_invalid_big_rep_area},
 {'name': 'zero_rep_m_area_marine12', 'func': area_invalid_rep_m_area_marine12},
