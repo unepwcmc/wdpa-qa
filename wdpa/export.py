@@ -92,8 +92,12 @@ def output_errors_to_excel(result, outpath, checks, inputfile, datatype):
     for function_name in function_names:
         if function_name in result:
             ws = wb.create_sheet(function_name)
+        # trying this encoding thing
+            df = result[function_name]
+            df = df.applymap(lambda x: x.encode('unicode_escape').
+                                   decode('utf-8') if isinstance(x, str) else x)
         # export DataFrame rows to Excel
-            for row in dataframe_to_rows(result[function_name], index=False):
+            for row in dataframe_to_rows(df, index=False):
                 ws.append(row)
         # Add a hyperlink to each sheet, to return to the Summary with a single click
             ws.insert_cols(1) # insert column at first position

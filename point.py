@@ -1,5 +1,11 @@
 # Load packages and modules
 import sys, arcpy, os
+
+script_path = os.path.abspath(sys.argv[0])
+atbx_dir = os.path.dirname(os.path.dirname(os.path.dirname(script_path)))
+if atbx_dir not in sys.path:
+    sys.path.insert(0, atbx_dir)
+
 from wdpa.qa import arcgis_table_to_df, find_wdpa_rows, pt_checks, INPUT_FIELDS_PT
 from wdpa.export import output_errors_to_excel
 
