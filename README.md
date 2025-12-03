@@ -76,6 +76,7 @@ The DMP applies the same checks when uploading data, but this toolbox is still u
 	- GOVSUBTYPE; OWNSUBTYPE; OECM_ASMT; INLND_WTRS
 - Various changes to allowed values for some fields
 - Some now irrelevant checks removed
+- Added check for excessive vertices in polygons
 
 All PA and OECM checks have been combined to comply with the WDPCA. The ArcGIS toolbox (.atbx) now has two scripts: Points and Polygons. A small change was also done to these execution scripts
 to allow for changes (specifically with regards to pathing) from .tbx to .atbx format.
