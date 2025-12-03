@@ -77,7 +77,7 @@ def output_errors_to_excel(result, outpath, checks, inputfile, datatype):
                     return (wb['Summary'].cell(row=cell.row, column=1).row) # return cell's row number
 
     # Set variables - to later add the current day to the filename
-    filename = f'{datetime.datetime.now().strftime("%d%b%Y")}_WDPA_QA_checks_{inputfile}_{datatype}.xlsx'
+    filename = f'{datetime.datetime.now().strftime("%d%b%Y")}_WDPCA_QA_checks_{inputfile}_{datatype}.xlsx'
     output = outpath + os.sep + filename
 
     # Create the Excel workbook and the Summary sheet

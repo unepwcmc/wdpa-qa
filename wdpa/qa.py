@@ -1141,7 +1141,8 @@ def invalid_desig_eng_regional(wdpa_df, return_pid=False):
                             'ASEAN Heritage Park',
                             'NEAFC Area Closed to Bottom Fisheries for the protection of VMEs',
                             'OECM',
-                            'Emerald Network']
+                            'Emerald Network',
+                            'Special Areas of Conservation (Habitats Directive)']
     condition_field = 'DESIG_TYPE'
     condition_crit = ['Regional']
 
@@ -1169,8 +1170,8 @@ def invalid_desig_type_regional(wdpa_df, return_pid=False):
                       'Specially Protected Areas of Mediterranean Importance (Barcelona Convention)',
                       'ASEAN Heritage Park',
                       'NEAFC Area Closed to Bottom Fisheries for the protection of VMEs',
-                      'OECM',
-                      'Emerald Network']
+                      'Emerald Network',
+                      'Special Areas of Conservation (Habitats Directive)']
 
     return invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field, condition_crit, return_pid)
 
@@ -1186,7 +1187,6 @@ def invalid_int_crit_desig_eng_ramsar_whs(wdpa_df, return_pid=False):
     Return list of SITE_PIDs where INT_CRIT is invalid, if return_pid is set True
     '''
 
-    # Function to create the possible INT_CRIT combination
     def generate_combinations():
         import itertools
         collection = []
@@ -1198,7 +1198,6 @@ def invalid_int_crit_desig_eng_ramsar_whs(wdpa_df, return_pid=False):
                 collection.append(';'.join(combi)) # values must be in numerical order
         return collection
 
-    # Arguments
     field = 'INT_CRIT'
     field_allowed_values_extra = ['Not Reported']
     field_allowed_values = generate_combinations() + field_allowed_values_extra
@@ -1300,7 +1299,7 @@ def invalid_no_take_marine0(wdpa_df, return_pid=False):
     '''
 
     field = 'NO_TAKE'
-    field_allowed_values = ['Not Applicable','All','Part','None']
+    field_allowed_values = ['Not Applicable', 'All', 'Part', 'None']
     condition_field = 'REALM'
     condition_crit = ['Terrestrial']
 
@@ -1318,7 +1317,7 @@ def invalid_no_take_marine12(wdpa_df, return_pid=False):
     '''
 
     field = 'NO_TAKE'
-    field_allowed_values = ['All', 'Part', 'None', 'Not Reported']
+    field_allowed_values = ['All', 'All ', 'Part', 'None', 'Not Reported']
     condition_field = 'REALM'
     condition_crit = ['Coastal', 'Marine']
 
@@ -1364,7 +1363,7 @@ def invalid_no_tk_area_no_take(wdpa_df, return_pid=False):
 
 '''
 Return True if STATUS is unequal to any of the following allowed values:
-["Proposed", "Designated", "Established"] for all sites except 2 designations (WH & Barcelona convention)
+["Proposed", "Designated", "Established"] for all sites EXCEPT 2 designations (WH & Barcelona convention)
 Return list of SITE_PIDs where STATUS is invalid, if return_pid is set True
 
 Note: "Inscribed" and "Adopted" are only valid for specific DESIG_ENG.
@@ -1373,11 +1372,9 @@ Note: "Inscribed" and "Adopted" are only valid for specific DESIG_ENG.
 def invalid_status(wdpa_df, return_pid=False):
 
     def value_isnot_in_field(wdpa_df, field, field_allowed_values, condition_field, condition_cri, return_pid=False):
-        # if condition_field and condition_cri are specified
         invalid_SITE_PID = wdpa_df[(~wdpa_df[field].isin(field_allowed_values)) & (~wdpa_df[condition_field].isin(condition_cri))]['SITE_PID'].values
 
         if return_pid:
-            # return list with invalid SITE_PIDs
             return invalid_SITE_PID
 
         return len(invalid_SITE_PID) > 0
@@ -1397,7 +1394,7 @@ def invalid_status(wdpa_df, return_pid=False):
 def invalid_status_WH(wdpa_df, return_pid=False):
     '''
     Return True if STATUS is unequal to any of the following allowed values:
-    ["Proposed", "Inscribed"] and DESIG_ENG is unqual to 'World Heritage Site (natural or mixed)'
+    ["Proposed", "Inscribed"] and DESIG_ENG is unequal to 'World Heritage Site (natural or mixed)'
     Return list of SITE_PIDs where STATUS is invalid, if return_pid is set True
 
     '''
@@ -2388,7 +2385,7 @@ def invalid_inlnd_wtrs_marine(wdpa_df, return_pid=False):
 #### 11.1 Invalid vertices count >50k ####
 #######################################################
 
-def vertices_count_exceeds_limit(wdpa_df, return_pid=False):
+def excessive_vertices (wdpa_df, return_pid=False):
     '''
     Return True if vertex count is greater than 50,000
     Return list of SITE_PIDs where vertex count is greater than 50,000, if return_pid=True
@@ -2517,7 +2514,7 @@ area_checks = [
 {'name': 'ivd_marine_designation', 'func': area_invalid_marine},
 {'name': 'ivd_nan_present_gis_m_area', 'func': ivd_nan_present_gis_m_area},
 {'name': 'ivd_nan_present_gis_area', 'func': ivd_nan_present_gis_area},
-{'name': 'ivd_nan_vertices_count_exceeds_limit', 'func': vertices_count_exceeds_limit}
+{'name': 'ivd_excessive_vertices', 'func': excessive_vertices}
 ]
 
 #checks to be run for OECMs only

@@ -75,11 +75,17 @@ The DMP applies the same checks when uploading data, but this toolbox is still u
 - Added new fields and associated checks for allowed values
 	- GOVSUBTYPE; OWNSUBTYPE; OECM_ASMT; INLND_WTRS
 - Various changes to allowed values for some fields
-- Some now irrelevant checks removed
+- Some now-irrelevant checks removed
 - Added check for excessive vertices in polygons
+- Changed WDPA to WDPCA in export.py
 
-All PA and OECM checks have been combined to comply with the WDPCA. The ArcGIS toolbox (.atbx) now has two scripts: Points and Polygons. A small change was also done to these execution scripts
-to allow for changes (specifically with regards to pathing) from .tbx to .atbx format.
+All PA and OECM checks have been combined to align with the WDPCA. The ArcGIS toolbox (.atbx) now has two scripts: Points and Polygons. A small change was made to these execution scripts
+to fix a pathing error resulting from change to .atbx from .tbx format.
+
+Known issues not resolved:
+- Status check (ivd_status) will fail for sites with 'Not Reported'. This value is only allowed for old data and should still flag for new data.
+- Update to new schema included adding ';' between values in INT_CRIT. This was accounted for, however if values are not in numerical order, the check will fail (ivd_int_crit).
+- GOVSUBTYPE does not allow for ';' between values when multiple (ivd_govsubtype_shared / notshared)
 
 ## Credits
 
