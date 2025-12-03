@@ -998,7 +998,7 @@ def invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field
 #### 4.1. Invalid SITE_TYPE ####
 #############################
 
-def invalid_SITE_TYPE(wdpa_df, return_pid=False):
+def invalid_site_type(wdpa_df, return_pid=False):
     '''
     Return True if SITE_TYPE not 1 or 0
     Return list of SITE_PIDs where SITE_TYPE is not 'PA' or 'OECM', if return_pid is set True
@@ -1032,18 +1032,18 @@ def invalid_iucn_cat_pa_df(wdpa_df, return_pid=False):
 #### 4.1.b SITE_TYPE = 1, SUPP_INFO must be Not Applicable ####
 #############################
 
-def invalid_supp_info_pa_df(wdpa_df, return_pid=False):
-    '''
-    Return True if SUPP_INFO is not "Not Applicable", if SITE_TYPE = 'OECM'
-    Return list of SITE_PIDs where SITE_TYPE is not 'PA' or 'OECM', if return_pid is set True
-    '''
+# def invalid_supp_info_pa_df(wdpa_df, return_pid=False):
+#     '''
+#     Return True if SUPP_INFO is not "Not Applicable", if SITE_TYPE = 'OECM'
+#     Return list of SITE_PIDs where SITE_TYPE is not 'PA' or 'OECM', if return_pid is set True
+#     '''
 
-    field = 'SUPP_INFO'
-    field_allowed_values = ['Not Applicable']
-    condition_field = 'SITE_TYPE'
-    condition_crit = ['OECM']
+#     field = 'SUPP_INFO'
+#     field_allowed_values = ['Not Applicable']
+#     condition_field = 'SITE_TYPE'
+#     condition_crit = ['OECM']
 
-    return invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field, condition_crit, return_pid)
+#     return invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field, condition_crit, return_pid)
 
 #############################
 #### 4.1.c SITE_TYPE = 1, CONS_OBJ must be Not Applicable ####
@@ -1051,14 +1051,14 @@ def invalid_supp_info_pa_df(wdpa_df, return_pid=False):
 
 def invalid_cons_obj_pa_df(wdpa_df, return_pid=False):
     '''
-    Return True if CONS_OBJ is not "Not Applicable", if SITE_TYPE = 'OECM'
+    Return True if CONS_OBJ is not "Not Applicable", if SITE_TYPE = 'PA'
     Return list of SITE_PIDs where SITE_TYPE is not 'PA' or 'OECM', if return_pid is set True
     '''
 
     field = 'CONS_OBJ'
     field_allowed_values = ['Not Applicable']
     condition_field = 'SITE_TYPE'
-    condition_crit = ['OECM']
+    condition_crit = ['PA']
 
     return invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field, condition_crit, return_pid)
 
@@ -1079,23 +1079,6 @@ def invalid_cons_obj_pa_df0(wdpa_df, return_pid=False):
 
     return invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field, condition_crit, return_pid)
 
-###############################
-#### 4.1.e SITE_TYPE=PA, CONS_OBJ must be Not Applicable
-###############################
-
-def invalid_cons_obj_pa_df1(wdpa_df, return_pid=False):
-    '''
-    Return True if CONS_OBJ is not one of the values below, if SITE_TYPE = PA
-    Return list of SITE_PIDs where SITE_TYPE is not 'PA' or 'OECM', if return_pid is set True
-    '''
-
-    field = 'CONS_OBJ'
-    field_allowed_values = ['Not Applicable']
-    condition_field = 'SITE_TYPE'
-    condition_crit = ['PA']
-
-    return invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field, condition_crit, return_pid)
-
 ################################################
 #### 4.2. Invalid DESIG_ENG - international ####
 ################################################
@@ -1109,7 +1092,8 @@ def invalid_desig_eng_international(wdpa_df, return_pid=False):
     field = 'DESIG_ENG'
     field_allowed_values = ['Wetland of International Importance (Ramsar Site)',
                             'UNESCO-MAB Biosphere Reserve',
-                            'World Heritage Site (natural or mixed)']
+                            'World Heritage Site (natural or mixed)',
+                            'World Heritage Site (cultural)']
     condition_field = 'DESIG_TYPE'
     condition_crit = ['International']
 
@@ -1402,7 +1386,6 @@ def invalid_status(wdpa_df, return_pid=False):
     field_allowed_values = ['Proposed', 'Designated', 'Established']
     condition_field = 'DESIG_ENG'
     condition_cri = ['World Heritage Site (natural or mixed)',
-                     'World Heritage Site (cultural)',
                      'Specially Protected Areas of Mediterranean Importance (Barcelona Convention)']
 
     return value_isnot_in_field(wdpa_df, field, field_allowed_values, condition_field, condition_cri, return_pid)
@@ -1417,7 +1400,6 @@ def invalid_status_WH(wdpa_df, return_pid=False):
     ["Proposed", "Inscribed"] and DESIG_ENG is unqual to 'World Heritage Site (natural or mixed)'
     Return list of SITE_PIDs where STATUS is invalid, if return_pid is set True
 
-    KG: Proposed removed from allowed value list
     '''
 
     field = 'STATUS'
@@ -1433,15 +1415,14 @@ def invalid_status_WH(wdpa_df, return_pid=False):
 
 def invalid_status_Barca(wdpa_df, return_pid=False):
     '''
-    Return True if STATUS is unequal to any of the following allowed values:
-    ["Proposed", "Established", "Adopted"] and DESIG_ENG is unqual to 'Specially Protected Areas of Mediterranean Importance (Barcelona Convention)'
+    Return True if STATUS is unequal to any of the following allowed values and DESIG_ENG is unequal to 
+    'Specially Protected Areas of Mediterranean Importance (Barcelona Convention)'
     Return list of SITE_PIDs where STATUS is invalid, if return_pid is set True
 
-    KG: Proposed removed from allowed value list
     '''
 
     field = 'STATUS'
-    field_allowed_values = ["Adopted"]
+    field_allowed_values = ["Proposed", "Designated", "Established", "Adopted"]
     condition_field = 'DESIG_ENG'
     condition_crit = ['Specially Protected Areas of Mediterranean Importance (Barcelona Convention)']
 
@@ -1485,7 +1466,7 @@ def invalid_gov_type(wdpa_df, return_pid=False):
                             'Individual landowners',
                             'Non-profit organisations',
                             'For-profit organisations',
-                            'Indigenous peoples',
+                            'Indigenous Peoples',
                             'Local communities',
                             'Not Reported']
 
@@ -1498,7 +1479,7 @@ def invalid_gov_type(wdpa_df, return_pid=False):
 #### 4.17.1 Invalid GOVSUBTYPE ####
 ################################
 
-def invalid_govsubtype(wdpa_df, return_pid=False):
+def invalid_govsubtype_shared(wdpa_df, return_pid=False):
     '''
     Return True if GOVSUBTYPE is any allowed value below where GOV_TYPE is Joint or Collaborative governance
     Return list of SITE_PIDs where GOVSUBTYPE is invalid, if return_pid is set True
@@ -1524,7 +1505,7 @@ def invalid_govsubtype(wdpa_df, return_pid=False):
 #### 4.17.2 Invalid GOVSUBTYPE ####
 ################################
 
-def invalid_govsubtype2(wdpa_df, return_pid=False):
+def invalid_govsubtype_notshared(wdpa_df, return_pid=False):
     '''
     Return True if GOVSUBTYPE is set to Not Applicable where GOV_TYPE is not Joint or Collaborative governance
     Return list of SITE_PIDs where GOVSUBTYPE is invalid, if return_pid is set True
@@ -1576,7 +1557,7 @@ def invalid_own_type(wdpa_df, return_pid=False):
 #### 4.18. Invalid OWN_TYPE ####
 ################################
 
-def invalid_own_type2(wdpa_df, return_pid=False):
+def invalid_own_type_abnj(wdpa_df, return_pid=False):
     '''
     Return True if OWN_TYPE is not equal to Not Applicable when ISO3 is ABNJ
     Return list of SITE_PIDs where OWN_TYPE is invalid, if return_pid is set True
@@ -1593,7 +1574,7 @@ def invalid_own_type2(wdpa_df, return_pid=False):
 #### 4.18.1 Invalid OWNSUBTYPE ####
 ################################
 
-def invalid_ownsubtype(wdpa_df, return_pid=False):
+def invalid_ownsubtype_shared(wdpa_df, return_pid=False):
     '''
     Return True if OWNSUBTYPE is not one of the allowed values when OWN_TYPE is joint/multiple/contested
     Return list of SITE_PIDs where OWN_TYPE is invalid, if return_pid is set True
@@ -1616,7 +1597,7 @@ def invalid_ownsubtype(wdpa_df, return_pid=False):
 #### 4.18.2 Invalid OWNSUBTYPE ####
 ################################
 
-def invalid_ownsubtype2(wdpa_df, return_pid=False):
+def invalid_ownsubtype_notshared(wdpa_df, return_pid=False):
     '''
     Return True if OWNSUBTYPE is set to Not Applicable when OWN_TYPE is not joint/multiple/contested
     Return list of SITE_PIDs where OWN_TYPE is invalid, if return_pid is set True
@@ -2467,9 +2448,9 @@ core_checks = [
 {'name': 'ivd_dif_verif_same_id', 'func': inconsistent_verif_same_SITE_ID},
 {'name': 'ivd_dif_metadataid_same_id', 'func': inconsistent_metadataid_same_SITE_ID},
 # {'name': 'dif_sub_loc_same_id', 'func': inconsistent_sub_loc_same_SITE_ID},
-{'name': 'ivd_dif_PRNT_ISO3_same_id', 'func': inconsistent_PRNT_ISO3_same_SITE_ID},
+{'name': 'ivd_dif_prnt_iso3_same_id', 'func': inconsistent_PRNT_ISO3_same_SITE_ID},
 {'name': 'ivd_dif_iso3_same_id', 'func': inconsistent_iso3_same_SITE_ID},
-{'name': 'ivd_SITE_TYPE', 'func': invalid_SITE_TYPE},
+{'name': 'ivd_site_type', 'func': invalid_site_type},
 {'name': 'ivd_desig_eng_international', 'func': invalid_desig_eng_international},
 {'name': 'ivd_desig_type_international', 'func': invalid_desig_type_international},
 {'name': 'ivd_desig_eng_regional', 'func': invalid_desig_eng_regional},
@@ -2488,14 +2469,14 @@ core_checks = [
 {'name': 'ivd_status_BarcelonaConv', 'func': invalid_status_Barca},
 {'name': 'ivd_status_yr', 'func': invalid_status_yr},
 {'name': 'ivd_gov_type', 'func': invalid_gov_type},
-{'name': 'ivd_govsubtype', 'func': invalid_govsubtype},
-{'name': 'ivd_govsubtype2', 'func': invalid_govsubtype2},
+{'name': 'ivd_govsubtype_shared', 'func': invalid_govsubtype_shared},
+{'name': 'ivd_govsubtype_notshared', 'func': invalid_govsubtype_notshared},
 {'name': 'ivd_own_type', 'func': invalid_own_type},
-{'name': 'ivd_own_type2', 'func': invalid_own_type2},
-{'name': 'ivd_ownsubtype', 'func': invalid_ownsubtype},
-{'name': 'ivd_ownsubtype2', 'func': invalid_ownsubtype2},
+{'name': 'ivd_own_type_abnj', 'func': invalid_own_type_abnj},
+{'name': 'ivd_ownsubtype_shared', 'func': invalid_ownsubtype_shared},
+{'name': 'ivd_ownsubtype_notshared', 'func': invalid_ownsubtype_notshared},
 {'name': 'ivd_verif', 'func': invalid_verif},
-{'name': 'check_PRNT_ISO3', 'func': invalid_PRNT_ISO3},
+{'name': 'check_prnt_iso3', 'func': invalid_PRNT_ISO3},
 {'name': 'check_iso3', 'func': invalid_iso3},
 {'name': 'ivd_status_desig_type', 'func': invalid_status_desig_type},
 {'name': 'check_character_name', 'func': forbidden_character_name},
@@ -2542,10 +2523,10 @@ area_checks = [
 #checks to be run for OECMs only
 oecm_checks = [
 {'name': 'ivd_iucn_cat_pa_df', 'func': invalid_iucn_cat_pa_df},
-{'name': 'ivd_supp_info_pa_df', 'func':invalid_supp_info_pa_df},
+#{'name': 'ivd_supp_info_pa_df', 'func':invalid_supp_info_pa_df},
 {'name': 'ivd_cons_obj_pa_df', 'func':invalid_cons_obj_pa_df},
 {'name': 'ivd_cons_obj_pa_df0', 'func':invalid_cons_obj_pa_df0},
-{'name': 'ivd_cons_obj_pa_df1', 'func':invalid_cons_obj_pa_df1}]
+]
 
 # Checks to be run for point data only
 point_checks = [{'name': 'ivd_marine_pt', 'func': invalid_marine_pt}]
