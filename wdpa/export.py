@@ -77,7 +77,7 @@ def output_errors_to_excel(result, outpath, checks, inputfile, datatype):
                     return (wb['Summary'].cell(row=cell.row, column=1).row) # return cell's row number
 
     # Set variables - to later add the current day to the filename
-    filename = f'{datetime.datetime.now().strftime("%d%b%Y")}_WDPA_QA_checks_{inputfile}_{datatype}.xlsx'
+    filename = f'{datetime.datetime.now().strftime("%d%b%Y")}_WDPCA_QA_checks_{inputfile}_{datatype}.xlsx'
     output = outpath + os.sep + filename
 
     # Create the Excel workbook and the Summary sheet
@@ -92,8 +92,12 @@ def output_errors_to_excel(result, outpath, checks, inputfile, datatype):
     for function_name in function_names:
         if function_name in result:
             ws = wb.create_sheet(function_name)
+        # trying this encoding thing
+            df = result[function_name]
+            df = df.applymap(lambda x: x.encode('unicode_escape').
+                                   decode('utf-8') if isinstance(x, str) else x)
         # export DataFrame rows to Excel
-            for row in dataframe_to_rows(result[function_name], index=False):
+            for row in dataframe_to_rows(df, index=False):
                 ws.append(row)
         # Add a hyperlink to each sheet, to return to the Summary with a single click
             ws.insert_cols(1) # insert column at first position

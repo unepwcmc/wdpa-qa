@@ -35,12 +35,15 @@ Note: installing Anaconda is not required. Refrain from using any other Conda in
 5. Go to the folder where you unzipped RAMBO, select the `.tbx` file (with red icon), and press 'OK'.
 6. Open the Catalog pane --> Toolboxes --> The WDPA QA toolbox should now be visible.
 7. Expand the toolbox, so that the embedded scripts become visible.
-8. Right-click the script to run (e.g. for polygons or points), click Open, and specify the input table (feature class attribute table) to be checked, and the output directory.
+8. Right-click the script to run (e.g. for polygons or points, or with OECMS included), click Open, and specify the input table (feature class attribute table) to be checked, and the output directory.
 9. Click Run, and click 'View Details' if you wish to see the progress.
 10. The Excel output will be present in the previously specified output directory.
 11. If you encounter errors, please refer to the Troubleshooting section in the Wiki.
 
 ## Notes
+
+The scripts "Polygons" & "Points" can be run on either the WDPA, the OECM, or the combined datasets. However, a few tests will be missed.
+The scripts "OECM_Polygons" and "OECM_Points" include additional tests that REQUIRE the additional fields just found in the OECM or the WDPA_WDOECM datasets. These will fail if tried on the stand alone WDPA version!
 
 Please refrain from committing directly to the `master` branch. Instead, create a different branch containing edits and submit a pull request. 
 
@@ -54,25 +57,41 @@ Run tests with
 python -m unittest
 ```
 
-## next steps
+##ideas
 
-- (Done) Add `METADATAID` check: compare the `METADATAID`s present in the WDPA Polygon and Point tables, to the Source Table.
-- (Done) Add a check for empty cells
-- (Done) Improve invalid `ISO3` check: currently, Protected Areas which have more than one `ISO3` value are flagged. Instead, split up those entries that contain multiple `ISO3` values, separated by `;`, and compare those individually to the list of allowed `ISO3` values.
-- (Duplicate?) Add a single check for `Null` values for all fields
-- (Done) Check whether there are any duplicate `WDPA_PID`s between Points and Polygon feature class attribute tables.
+Please add new ideas, as well as problems, into the Sharepoint doc. Ask someone from the team if you don't have access to it
 
-## ideas
-- Make the name of the input feature class a part of the Excel output's filename.
-- If useful: add function that is the `GIS_M_AREA` equivalent of `ivd_no_tk_area_rep_m_area`: flag `WDPA_PIDs` whose `NO_TAKE` value is `All`, but `NO_TK_AREA` is not the same value as `GIS_M_AREA`.
-- Add forbidden characters checks for the fields of the Source table.
+## Update 2025
+
+In December 2025 the qa script was updated to allow the tool to be used with data in the combined WDPCA in the new schema and also align with checks in the Data Management Portal (DMP). 
+The DMP applies the same checks when uploading data, but this toolbox is still used by people following data updates to ensure compliance. A summary of changes is below.
+
+- Changed field names
+	- WDPAID -> SITE_ID; WDPA_PID -> SITE_PID; PA_DEF -> SITE_TYPE; MARINE -> REALM; NAME -> NAME_ENG; ORIG_NAME -> NAME; PARENT_ISO3 -> PRNT_ISO3
+- Changed coding associated with changed field names
+	- SITE_TYPE changed to string with specified allowed values
+	- REALM changed to string with specified allowed values
+- Removed SUB_LOC field and associated checks
+- Added new fields and associated checks for allowed values
+	- GOVSUBTYPE; OWNSUBTYPE; OECM_ASMT; INLND_WTRS
+- Various changes to allowed values for some fields
+- Some now-irrelevant checks removed
+- Added check for excessive vertices in polygons
+- Changed WDPA to WDPCA in export.py
+
+All PA and OECM checks have been combined to align with the WDPCA. The ArcGIS toolbox (.atbx) now has two scripts: Points and Polygons. A small change was made to these execution scripts
+to fix a pathing error resulting from change to .atbx from .tbx format.
+
+Known issues not resolved:
+- Status check (ivd_status) will fail for sites with 'Not Reported'. This value is only allowed for old data and should still flag for new data.
+- Update to new schema included adding ';' between values in INT_CRIT. This was accounted for, however if values are not in numerical order, the check will fail (ivd_int_crit).
+- GOVSUBTYPE does not allow for ';' between values when multiple (ivd_govsubtype_shared / notshared)
 
 ## Credits
 
-Author: Stijn den Haan
+Original author: Stijn den Haan
 
 Supervisor: Yichuan Shi
 
-Bioinformatics internship • UNEP-WCMC • 10 June - 9 August 2019
-
+Further development: Claire Vincent (2020), Sara Pruckner, Kelsey Green (2025)
 ---
