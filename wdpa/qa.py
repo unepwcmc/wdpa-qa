@@ -191,7 +191,7 @@ def duplicate_SITE_PID(wdpa_df, return_pid=False):
 #### 2.2. Invalid: REALM designation based on GIS_AREA and GIS_M_AREA ####
 ###########################################################################
 
-def area_invalid_marine(wdpa_df, return_pid=False):
+def area_invalid_realm(wdpa_df, return_pid=False):
     '''
     Assign a new 'REALM' value based on GIS calculations, called marine_GIS_value
     Return True if marine_GIS_value is unequal to REALM
@@ -1000,7 +1000,7 @@ def invalid_value_in_field(wdpa_df, field, field_allowed_values, condition_field
 
 def invalid_site_type(wdpa_df, return_pid=False):
     '''
-    Return True if SITE_TYPE not 1 or 0
+    Return True if SITE_TYPE not PA or OECM.
     Return list of SITE_PIDs where SITE_TYPE is not 'PA' or 'OECM', if return_pid is set True
     '''
 
@@ -1292,7 +1292,7 @@ def invalid_marine(wdpa_df, return_pid=False):
 #### 4.11. Invalid NO_TAKE & REALM = 0 ####
 ############################################
 
-def invalid_no_take_marine0(wdpa_df, return_pid=False):
+def invalid_no_take_realm0(wdpa_df, return_pid=False):
     '''
     Return True if NO_TAKE is not equal to 'Not Applicable' and REALM = Terrestrial
     Return list of SITE_PIDs where NO_TAKE is invalid, if return_pid is set True
@@ -1309,7 +1309,7 @@ def invalid_no_take_marine0(wdpa_df, return_pid=False):
 #### 4.12. Invalid NO_TAKE & REALM = [1,2] ####
 ################################################
 
-def invalid_no_take_marine12(wdpa_df, return_pid=False):
+def invalid_no_take_realm12(wdpa_df, return_pid=False):
     '''
     Return True if NO_TAKE is not in ['All', 'Part', 'None', 'Not Reported'] while REALM = [Coastal, Marine]
     I.e. check whether coastal and marine sites have an invalid NO_TAKE value.
@@ -1327,7 +1327,7 @@ def invalid_no_take_marine12(wdpa_df, return_pid=False):
 #### 4.13. Invalid NO_TK_AREA & REALM ####
 ###########################################
 
-def invalid_no_tk_area_marine0(wdpa_df, return_pid=False):
+def invalid_no_tk_area_realm0(wdpa_df, return_pid=False):
     '''
     Return True if NO_TK_AREA is unequal to 0 while REALM = 0
     Return list of SITE_PIDs where NO_TAKE is invalid, if return_pid is set True
@@ -2011,7 +2011,7 @@ def nan_present(wdpa_df, check_field, return_pid=False):
 #### 7.1. NaN present - NAME ####
 #################################
 
-def ivd_nan_present_name(wdpa_df, return_pid=False):
+def ivd_nan_present_name_eng(wdpa_df, return_pid=False):
     '''
     Capture NaN / NA in the field 'NAME_ENG'
 
@@ -2027,7 +2027,7 @@ def ivd_nan_present_name(wdpa_df, return_pid=False):
 #### 7.2. NaN present - ORIG_NAME ####
 ######################################
 
-def ivd_nan_present_orig_name(wdpa_df, return_pid=False):
+def ivd_nan_present_name(wdpa_df, return_pid=False):
     '''
     Capture NaN / NA in the field 'NAME'
 
@@ -2385,7 +2385,7 @@ def invalid_inlnd_wtrs_marine(wdpa_df, return_pid=False):
 #### 11.1 Invalid vertices count >50k ####
 #######################################################
 
-def excessive_vertices (wdpa_df, return_pid=False):
+def excessive_vertices(wdpa_df, return_pid=False):
     '''
     Return True if vertex count is greater than 50,000
     Return list of SITE_PIDs where vertex count is greater than 50,000, if return_pid=True
@@ -2457,9 +2457,9 @@ core_checks = [
 {'name': 'ivd_iucn_cat', 'func': invalid_iucn_cat},
 {'name': 'ivd_iucn_cat_unesco_whs', 'func': invalid_iucn_cat_unesco_whs},
 {'name': 'ivd_marine', 'func': invalid_marine},
-{'name': 'check_no_take_marine0', 'func': invalid_no_take_marine0},
-{'name': 'ivd_no_take_marine12', 'func': invalid_no_take_marine12},
-{'name': 'check_no_tk_area_marine0', 'func': invalid_no_tk_area_marine0},
+{'name': 'check_no_take_realm0', 'func': invalid_no_take_realm0},
+{'name': 'ivd_no_take_realm12', 'func': invalid_no_take_realm12},
+{'name': 'check_no_tk_area_realm0', 'func': invalid_no_tk_area_realm0},
 {'name': 'ivd_no_tk_area_no_take', 'func': invalid_no_tk_area_no_take},
 {'name': 'ivd_status', 'func': invalid_status},
 {'name': 'ivd_status_WH', 'func': invalid_status_WH},
@@ -2483,8 +2483,8 @@ core_checks = [
 {'name': 'check_character_mang_auth', 'func': forbidden_character_mang_auth},
 {'name': 'check_character_mang_plan', 'func': forbidden_character_mang_plan},
 # {'name': 'ivd_character_sub_loc', 'func': forbidden_character_sub_loc},
+{'name': 'ivd_nan_present_name_eng', 'func': ivd_nan_present_name_eng},
 {'name': 'ivd_nan_present_name', 'func': ivd_nan_present_name},
-{'name': 'ivd_nan_present_orig_name', 'func': ivd_nan_present_orig_name},
 {'name': 'ivd_nan_present_desig', 'func': ivd_nan_present_desig},
 {'name': 'ivd_nan_present_desig_eng', 'func': ivd_nan_present_desig_eng},
 {'name': 'ivd_nan_present_mang_auth', 'func': ivd_nan_present_mang_auth},
@@ -2511,7 +2511,7 @@ area_checks = [
 {'name': 'no_tk_area_gt_gis_m_area', 'func': area_invalid_no_tk_area_gis_m_area},
 {'name': 'ivd_gis_m_area_gt_gis_area', 'func': area_invalid_gis_m_area_gis_area},
 {'name': 'zero_gis_m_area_marine12', 'func': area_invalid_gis_m_area_marine12},
-{'name': 'ivd_marine_designation', 'func': area_invalid_marine},
+{'name': 'ivd_realm_designation', 'func': area_invalid_realm},
 {'name': 'ivd_nan_present_gis_m_area', 'func': ivd_nan_present_gis_m_area},
 {'name': 'ivd_nan_present_gis_area', 'func': ivd_nan_present_gis_area},
 {'name': 'ivd_excessive_vertices', 'func': excessive_vertices}
